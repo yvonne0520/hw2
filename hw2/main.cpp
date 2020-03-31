@@ -8,8 +8,8 @@ DigitalOut green(LED2);
 DigitalIn button(SW3);
 BusOut display(D6, D7, D9, D10, D11, D5, D4, D8);
 
-int sample = 500;
-float ADCdata[500];
+int sample = 1500;
+float ADCdata[1500];
 int freq = 0;
 char table[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 char table_last[10] = {0x3F+128, 0x06+128, 0x5B+128, 0x4F+128, 0x66+128, 0x6D+128, 0x7D+128, 0x07+128, 0x7F+128, 0x6F+128};
@@ -25,7 +25,7 @@ int main () {
     for (i = 0; i < sample; i++) {
         Aout = Ain;
         ADCdata[i] = Ain;
-        wait(1./(sample*10));
+        wait(1./sample);
     }
     
     for (i = 0; i < sample; i++){
@@ -38,7 +38,7 @@ int main () {
             t1 = i;
         }
     }
-    for (j = t1+26, t2 = t1+26; j < t1+55; j++) {
+    for (j = t1+11, t2 = t1+11; j < t1+17; j++) {
         if ((ADCdata[j]  > 0.4 && ADCdata[j] < 0.6)) {
             if (ab(ADCdata[t1] - ADCdata[t2]) > ab(ADCdata[t1] - ADCdata[j])) {
                    t2 = j;
@@ -46,7 +46,7 @@ int main () {
         }
     }
 
-    freq = (sample*10)/(t2-t1);
+    freq = sample/(t2-t1);
     
     while(1) {
         if (!button) {
